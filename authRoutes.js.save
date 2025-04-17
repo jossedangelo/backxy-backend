@@ -1,0 +1,66 @@
+// authRoutes.js
+const express = require('express');
+const bcrypt = require('bcrypt'); // Usaremos bcrypt para encriptar contraseñas
+const router = express.Router();
+
+// Simulamos una base de datos en memoria
+const users = [];
+
+// Endpoint de prueba
+router.get('/test', (req, res) => {
+  res.send('Ruta /api/auth/test funcionando correctamente');
+});
+
+// Endpoint de Registro de Usuario
+router.post('/register', async (req, res) => {
+  try {
+    const { email, username, password } = req.body;
+    
+    // Validar que todos los campos estén presentes
+    if (!email || !username || !password) {
+      return res.status(400).json({ error: 'Faltan datos requeridos.' });
+    }
+    
+    // Verificar si el email ya está registrado (simulación en la "base de datos")
+    const userExists = users.find(user => user.email === email);
+    if (userExists) {
+      return res.status(409).json({ error: 'El email ya está registrado.' });
+    }
+    
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Crear el nuevo usuario
+    const newUser = {
+      id: users.length + 1,
+      email,
+      username,
+      password: hashedPassword
+    };
+    
+    // Guardar el usuario en el arreglo
+    users.push(newUser);
+    
+    // Responder con éxito (para efectos de test, devolvemos el id del usuario)
+    res.status(201).json({ message: 'Usuario registrado correctamente', userId: newUser.id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+module.exports = router;
+// authRoutes.js
+const express = require('express');
+const router = express.Router();
+
+// Ejemplo de endpoint de prueba
+router.get('/test', (req, res) => {
+  res.send('Ruta /api/auth/test funcionando correctamente');
+});
+
+module.exports = router;
+
+
+
+express =
