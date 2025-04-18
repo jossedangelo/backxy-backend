@@ -1,11 +1,17 @@
+// — db.js —
+// Pool de conexiones MySQL usando mysql2/promise
 const mysql = require('mysql2/promise');
 
-// Configura la conexión usando los datos de cPanel
 const pool = mysql.createPool({
-  host:    '92.205.151.0',   // ← tu Shared IP, con comillas
-  user:    'backxy_user',
-  password:'josE5005%%%%%',
-  database:'backxy_db'
+  host:     process.env.DB_HOST,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port:     process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+  waitForConnections: true,
+  connectionLimit:    10,
+  queueLimit:         0
 });
+
 module.exports = pool;
 

@@ -1,40 +1,45 @@
-// server.js
-
 // — Carga variables de entorno (.env) —
 require('dotenv').config();
 
 // — Importaciones —
-const express = require('express');
-const cors = require('cors');
-const pool = require('./db');            // tu pool MySQL
-const authRoutes = require('./authRoutes');
-const verifyToken = require('./verifyToken');
+const express    = require('express');
+const cors       = require('cors');
+const pool       = require('./db');          // tu pool MySQL
+const authRoutes = require('./authRoutes');  // si tienes rutas de auth
+const verifyToken = require('./verifyToken'); // middleware para JWT
 
 // — App y middlewares —
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// — Sirve archivos estáticos de /public —
+// — Sirve estáticos de /public —
+// Si no usas carpeta public, puedes eliminar esta línea
 app.use(express.static('public'));
 
 // — Rutas de autenticación —
+// /api/auth/login, /api/auth/register, etc.
 app.use('/api/auth', authRoutes);
 
 // — Ruta protegida de ejemplo —
-app.get('/api/profile', verifyToken, (req, res) => {
-  res.json({
-    message: 'Acceso autorizado 🔒',
-    user: req.user            // { userId, email, iat, exp }
-  });
-});
+// Devuelve el payload del JWT si el token es válido
+app.get(
+  '/api/profile',
+  verifyToken,
+  (req, res) => {
+    res.json({
+      message: 'Acceso autorizado 🔒',
+      user: req.user            // { userId, email, iat, exp }
+    });
+  }
+);
 
 // — Endpoints públicos de prueba —
 
-// 1) Leer tabla test_table
+// 1) Leer tabla `prueba`
 app.get('/api/testdb', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM test_table');
+    const [rows] = await pool.query('SELECT * FROM prueba;');
     res.json({ rows });
   } catch (err) {
     console.error(err);
@@ -45,7 +50,9 @@ app.get('/api/testdb', async (req, res) => {
 // 2) Listar usuarios (id, email, username)
 app.get('/api/users', async (req, res) => {
   try {
-    const [users] = await pool.query('SELECT id, email, username FROM users');
+    const [users] = await pool.query(
+      'SELECT id, email, username FROM users;'
+    );
     res.json({ users });
   } catch (err) {
     console.error(err);
