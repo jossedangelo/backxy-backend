@@ -1,0 +1,110 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f3f2ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.card {
+  background: #fff;
+  padding: 32px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  width: 360px;
+  text-align: center;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 24px;
+  width: 120px;
+}
+
+h1 {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+}
+
+form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+form input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0073b1;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #005582;
+}
+
+.card a {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #0073b1;
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+#msg {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #d93025; /* rojo suave para errores */
+}
+
+/* Logo textual + símbolo */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.logo-icon {
+  font-size: 36px;
+  color: #33cc99;       /* verde Backxy */
+  margin-right: 8px;
+}
+
+.logo-text {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #26304e;       /* azul oscuro */
+}
+

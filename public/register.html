@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro • Backxy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <!-- Pon aquí tu logo en public/logo.png -->
+<div class="logo">
+  <span class="logo-icon">🧳</span>
+  <span class="logo-text">Backxy</span>
+</div>
+
+    <h1>Registro</h1>
+    <form id="registerForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+
+      <label for="username">Usuario</label>
+      <input type="text" id="username" required />
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Registrar</button>
+    </form>
+
+    <div id="msg"></div>
+
+    <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, username, password })
+        });
+        const data = await res.json();
+        document.getElementById('msg').innerText = res.ok
+          ? '¡Registro exitoso!'
+          : 'Error: ' + (data.error || JSON.stringify(data));
+      } catch (err) {
+        document.getElementById('msg').innerText = 'Error de red';
+      }
+    });
+  </script>
+</body>
+</html>
+

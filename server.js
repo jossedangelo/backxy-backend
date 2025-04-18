@@ -1,27 +1,27 @@
-// — Carga variables de entorno (.env) —
+// – Carga variables de entorno (.env) –
 require('dotenv').config();
 
-// — Importaciones —
-const express    = require('express');
-const cors       = require('cors');
-const pool       = require('./db');          // tu pool MySQL
-const authRoutes = require('./authRoutes');  // si tienes rutas de auth
-const verifyToken = require('./verifyToken'); // middleware para JWT
+// – Importaciones –
+const express     = require('express');
+const cors        = require('cors');
+const pool        = require('./db');          // tu pool MySQL
+const authRoutes  = require('./authRoutes');  // rutas de registro/login
+const verifyToken = require('./verifyToken'); // middleware JWT
 
-// — App y middlewares —
+// – App y middlewares –
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// — Sirve estáticos de /public —
-// Si no usas carpeta public, puedes eliminar esta línea
+// – Sirve estáticos de /public –
+// (si no usas carpeta public, puedes eliminar esta línea)
 app.use(express.static('public'));
 
-// — Rutas de autenticación —
-// /api/auth/login, /api/auth/register, etc.
+// – Rutas de autenticación –
+// Endpoints: POST /api/auth/register, POST /api/auth/login
 app.use('/api/auth', authRoutes);
 
-// — Ruta protegida de ejemplo —
+// – Ruta protegida de ejemplo –
 // Devuelve el payload del JWT si el token es válido
 app.get(
   '/api/profile',
@@ -29,12 +29,12 @@ app.get(
   (req, res) => {
     res.json({
       message: 'Acceso autorizado 🔒',
-      user: req.user            // { userId, email, iat, exp }
+      user: req.user   // { userId, email, iat, exp }
     });
   }
 );
 
-// — Endpoints públicos de prueba —
+// – Endpoints públicos de prueba –
 
 // 1) Leer tabla `prueba`
 app.get('/api/testdb', async (req, res) => {
@@ -60,12 +60,12 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// — Sanity check —
+// – Sanity check –
 app.get('/', (req, res) => {
   res.send('API Backxy funcionando correctamente!');
 });
 
-// — Iniciar servidor —
+// – Iniciar servidor –
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
