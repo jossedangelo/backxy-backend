@@ -1,9 +1,16 @@
 // db.js
+// — Carga variables de entorno (.env en local; en Railway ya vienen)
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// pool a partir de la URL completa de conexión
-const pool = mysql.createPool(process.env.MYSQL_URL);
+// Pool usando las vars individuales que Railway inyecta
+const pool = mysql.createPool({
+  host:     process.env.MYSQLHOST,
+  user:     process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port:     Number(process.env.MYSQLPORT),
+});
 
 module.exports = pool;
 
