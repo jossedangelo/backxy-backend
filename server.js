@@ -4,6 +4,7 @@ require('dotenv').config();
 // – Importaciones –
 const express     = require('express');
 const cors        = require('cors');
+const path        = require('path');
 const pool        = require('./db');          // tu pool MySQL
 const authRoutes  = require('./authRoutes');  // rutas de registro/login
 const verifyToken = require('./verifyToken'); // middleware JWT
@@ -13,9 +14,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// – Sirve estáticos de /public –
-// (si no usas carpeta public, puedes eliminar esta línea)
-app.use(express.static('public'));
+// – Serve estáticos de /public –
+app.use(express.static(path.join(__dirname, 'public')));
 
 // – Rutas de autenticación –
 // Endpoints: POST /api/auth/register, POST /api/auth/login
@@ -29,12 +29,12 @@ app.get(
   (req, res) => {
     res.json({
       message: 'Acceso autorizado 🔒',
-      user: req.user   // { userId, email, iat, exp }
+      user: req.user  // { userId, email, iat, exp }
     });
   }
 );
 
-// – Endpoints públicos de prueba –
+// — Endpoints públicos de prueba —
 
 // 1) Leer tabla `prueba`
 app.get('/api/testdb', async (req, res) => {
@@ -61,8 +61,16 @@ app.get('/api/users', async (req, res) => {
 });
 
 // – Sanity check –
+// Si llaman a la raíz de la API (sin ruta SPA), responde un texto simple
 app.get('/', (req, res) => {
   res.send('API Backxy funcionando correctamente!');
+});
+
+// — Catch‑all para rutas del frontend —
+// Cualquier URL que no coincida con los endpoints anteriores
+// devuelve el index.html de tu build React
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // – Iniciar servidor –
